@@ -1,5 +1,5 @@
 <template>
-  <q-header reveal bordered elevated class="bg-white text-black px-4 lg:block md:block ">
+  <q-header reveal bordered elevated class="bg-white text-black px-4" v-if="$q.screen.gt.xs">
     <q-toolbar>
       <q-toolbar-title class="font-bold text-x1"> Trellix</q-toolbar-title>
       <q-space />
@@ -9,4 +9,9 @@
     </q-toolbar>
   </q-header>
 </template>
-<script></script>
+
+<script setup>
+import { useQuasar } from 'quasar'
+
+const $q = useQuasar()
+</script>

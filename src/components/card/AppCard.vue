@@ -1,13 +1,15 @@
 <template>
   <q-card class="q-ma-sm">
-    <q-card-section>{{ card.content }}</q-card-section>
+    <q-card-section>{{ card.title }}</q-card-section>
     <q-btn
       flat
       dense
       color="red"
       icon="delete"
+      v-if="card.isUsercard !== false"
       @click="deleteCard(card.id)"
     />
+    
   </q-card>
 </template>
 
@@ -15,7 +17,7 @@
 import { useCardStore } from 'src/stores/cardStore'
 
 const { card } = defineProps({
-  card: Object
+  card: Object,
 })
 
 const cardStore = useCardStore()

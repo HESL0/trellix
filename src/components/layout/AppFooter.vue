@@ -1,13 +1,26 @@
 <template>
-  <q-header reveal:on elevated class="bg-white text-black px-4">
-    <q-toolbar>
-      <q-toolbar-title class="font-bold text-x1"> Trellix</q-toolbar-title>
-      <q-space/>
-<q-btn flat label="account"/>
-<q-btn flat label="Boards"/>
-<q-btn flat label="activity"/>
+  <q-footer reveal elevated class="bg-white text-black">
+    <q-toolbar class="q-pa-none">
+      <q-toolbar-title class="text-center">
+        <div class="row justify-center items-center q-gutter-x-lg q-py-sm">
+          <div class="col-auto text-center">
+            <q-btn flat dense icon="person" class="q-pa-xs" />
+            <div class="text-caption text-grey-7">Account</div>
+          </div>
+          <div class="col-auto text-center">
+            <q-btn flat dense @click="$router.push('/cards')" icon="dashboard" class="q-pa-xs" />
+            <div class="text-caption text-grey-7">cards</div>
+          </div>
+          <div class="col-auto text-center">
+            <q-btn flat dense icon="timeline" class="q-pa-xs" />
+            <div class="text-caption text-grey-7">Activity</div>
+          </div>
+        </div>
+      </q-toolbar-title>
     </q-toolbar>
-  </q-header>
+  </q-footer>
 </template>
-<script></script>
 
+<script setup>
+// Footer component for mobile devices only
+</script>
