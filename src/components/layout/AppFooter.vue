@@ -1,5 +1,5 @@
 <template>
-  <q-footer reveal elevated class="bg-white text-black">
+  <q-footer reveal elevated class="bg-white text-black" v-if="$q.screen.lt.md">
     <q-toolbar class="q-pa-none">
       <q-toolbar-title class="text-center">
         <div class="row justify-center items-center q-gutter-x-lg q-py-sm">
@@ -22,5 +22,4 @@
 </template>
 
 <script setup>
-// Footer component for mobile devices only
 </script>

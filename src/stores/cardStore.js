@@ -17,20 +17,25 @@ export const useCardStore = defineStore('card', () => {
     })
   }
 
-  function addItem(content) {
-    if (!content.trim()) return
-    cards.value.push({
-      id: Date.now(),
-      items: [],
-      title: content,
-      isUsercard: true,
-    })
-  }
+function addItemToCard(cardId, content) {
+  const card = cards.value.find(c => c.id === cardId)
+  if (!card || !content.trim()) return
+  card.items.push({
+    id: Date.now(),
+    content
+  })
+}
+
+function deleteItemFromCard(cardId, itemId) {
+  const card = cards.value.find(c => c.id === cardId)
+  if (!card) return
+  card.items = card.items.filter(item => item.id !== itemId)
+}
 
 
   function deleteCard(id) {
     cards.value = cards.value.filter((card) => card.id !== id)
   }
 
-  return { cards, addCard, deleteCard, additem }
+  return { cards, addCard, deleteCard, addItemToCard, deleteItemFromCard }
 })
