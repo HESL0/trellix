@@ -5,7 +5,7 @@ export const useCardStore = defineStore('card', () => {
   const cards = ref([
     { id: 1, items: [], title: 'Incomplete', isUsercard: false },
     { id: 2, items: [], title: 'complete', isUsercard: false },
-  ])
+  ]) 
 
   function addCard(content) {
     if (!content.trim()) return
