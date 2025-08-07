@@ -46,5 +46,18 @@ function deleteItemFromCard(cardId, itemId) {
     return true
   }
 
-  return { cards, addCard, deleteCard, addItemToCard, deleteItemFromCard, updateCardTitle }
+
+  function updateItem(cardId, itemId, newContent) {
+    if (!newContent.trim()) return false
+    const card = cards.value.find(c => c.id === cardId)
+    if (!card) return false
+    
+    const item = card.items.find(item => item.id === itemId)
+    if (!item) return false
+    
+    item.content = newContent.trim()
+    return true
+  }
+
+  return { cards, addCard, deleteCard, addItemToCard, deleteItemFromCard, updateCardTitle, updateItem }
 })

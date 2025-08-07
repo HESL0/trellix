@@ -60,11 +60,26 @@
 
       <q-list v-if="card.items && card.items.length" class="q-mt-md">
         <q-item v-for="item in card.items" :key="item.id" class="q-mb-sm bg-grey-2 rounded-borders">
-          <q-item-section draggable="true" dropzone="move" >
-            <q-item-label>{{ item.content }}</q-item-label>
+          <q-item-section>
+            <div v-if="!isEditingItem(item.id)" class="cursor-pointer" @click="startEditItem(item)">
+              <q-item-label>{{ item.content }}</q-item-label>
+            </div>
+            <q-input
+              v-else
+              v-model="editItemContent"
+              dense
+              outlined
+              placeholder="Edit item..."
+              @keyup.enter="saveEditItem(item.id)"
+              @keyup.esc="cancelEditItem"
+              @blur="saveEditItem(item.id)"
+              autofocus
+            />
           </q-item-section>
           <q-item-section side>
-            <q-btn icon="delete" dense flat color="negative" @click="deleteItem(item.id)" />
+            <div class="row q-gutter-xs">
+              <q-btn icon="delete" dense flat color="negative" @click="deleteItem(item.id)" />
+            </div>
           </q-item-section>
         </q-item>
       </q-list>
@@ -88,6 +103,8 @@ const newItem = ref('')
 const isEditing = ref(false)
 const editTitle = ref('')
 const titleInput = ref(null)
+const editingItemId = ref(null)
+const editItemContent = ref('')
 const cardStore = useCardStore()
 
 function deleteCard(id) {
@@ -129,5 +146,31 @@ function saveEdit() {
 function cancelEdit() {
   isEditing.value = false
   editTitle.value = ''
+}
+
+function isEditingItem(itemId) {
+  return editingItemId.value === itemId
+}
+
+function startEditItem(item) {
+  editingItemId.value = item.id
+  editItemContent.value = item.content
+}
+
+function saveEditItem(itemId) {
+  if (!editItemContent.value.trim()) {
+    cancelEditItem()
+    return
+  }
+  
+  if (editItemContent.value.trim() !== card.items.find(item => item.id === itemId)?.content) {
+    cardStore.updateItem(card.id, itemId, editItemContent.value)
+  }
+  cancelEditItem()
+}
+
+function cancelEditItem() {
+  editingItemId.value = null
+  editItemContent.value = ''
 }
 </script>
