@@ -2,7 +2,26 @@
   <q-card class="q-ma-sm shadow-2">
     <q-card-section darg class="bg-primary text-white">
       <div class="row items-center justify-between">
-        <div class="text-h6">{{ card.title }}</div>
+        <div class="col">
+          <div v-if="!isEditing" class="text-h6 cursor-pointer" @click="startEdit">
+            {{ card.title }}
+          </div>
+          <q-input
+            v-else
+            v-model="editTitle"
+            dense
+            outlined
+            dark
+            color="white"
+            bg-color="primary"
+            class="text-h6"
+            @keyup.enter="saveEdit"
+            @keyup.esc="cancelEdit"
+            @blur="saveEdit"
+            autofocus
+            ref="titleInput"
+          />
+        </div>
         <q-btn
           flat
           dense
@@ -59,13 +78,16 @@
 
 <script setup>
 import { useCardStore } from 'src/stores/cardStore'
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 
 const { card } = defineProps({
   card: Object,
 })
 
 const newItem = ref('')
+const isEditing = ref(false)
+const editTitle = ref('')
+const titleInput = ref(null)
 const cardStore = useCardStore()
 
 function deleteCard(id) {
@@ -80,5 +102,32 @@ function addItem() {
 
 function deleteItem(itemId) {
   cardStore.deleteItemFromCard(card.id, itemId)
+}
+
+function startEdit() {
+  if (card.isUsercard === false) return
+  editTitle.value = card.title
+  isEditing.value = true
+  nextTick(() => {
+    titleInput.value?.focus()
+    titleInput.value?.select()
+  })
+}
+
+function saveEdit() {
+  if (!editTitle.value.trim()) {
+    cancelEdit()
+    return
+  }
+  
+  if (editTitle.value.trim() !== card.title) {
+    cardStore.updateCardTitle(card.id, editTitle.value)
+  }
+  isEditing.value = false
+}
+
+function cancelEdit() {
+  isEditing.value = false
+  editTitle.value = ''
 }
 </script>

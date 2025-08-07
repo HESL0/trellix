@@ -37,5 +37,14 @@ function deleteItemFromCard(cardId, itemId) {
     cards.value = cards.value.filter((card) => card.id !== id)
   }
 
-  return { cards, addCard, deleteCard, addItemToCard, deleteItemFromCard }
+  function updateCardTitle(cardId, newTitle) {
+    if (!newTitle.trim()) return false
+    const card = cards.value.find(c => c.id === cardId)
+    if (!card || !card.isUsercard) return false
+    
+    card.title = newTitle.trim()
+    return true
+  }
+
+  return { cards, addCard, deleteCard, addItemToCard, deleteItemFromCard, updateCardTitle }
 })
