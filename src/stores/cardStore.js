@@ -59,5 +59,27 @@ function deleteItemFromCard(cardId, itemId) {
     return true
   }
 
-  return { cards, addCard, deleteCard, addItemToCard, deleteItemFromCard, updateCardTitle, updateItem }
+  function moveItem(itemId, fromCardId, toCardId) {
+    const fromCard = cards.value.find(c => c.id === fromCardId)
+    const toCard = cards.value.find(c => c.id === toCardId)
+    
+    if (!fromCard || !toCard) return false
+    
+    const itemIndex = fromCard.items.findIndex(item => item.id === itemId)
+    if (itemIndex === -1) return false
+    
+    const [item] = fromCard.items.splice(itemIndex, 1)
+    toCard.items.push(item)
+    
+    return true
+  }
+
+  function updateCardItems(cardId, newItems) {
+    const card = cards.value.find(c => c.id === cardId)
+    if (!card) return false
+    card.items = newItems
+    return true
+  }
+
+  return { cards, addCard, deleteCard, addItemToCard, deleteItemFromCard, updateCardTitle, updateItem, moveItem, updateCardItems }
 })
