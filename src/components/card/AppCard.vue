@@ -1,9 +1,9 @@
 <template>
-  <q-card class="q-ma-sm shadow-2">
+  <q-card class="q-ma-sm shadow-2" style="width: 300px; min-width: 300px; max-width: 300px;">
     <q-card-section class="bg-primary text-white">
       <div class="row items-center justify-between">
         <div class="col">
-          <div v-if="!isEditing" class="text-h6 cursor-pointer" @click="startEdit">
+          <div v-if="!isEditing" class="text-h6 cursor-pointer" style="max-width: 240px; word-break: break-word; overflow-wrap: break-word; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;" @click="startEdit">
             {{ card.title }}
           </div>
           <q-input
@@ -35,8 +35,6 @@
     </q-card-section>
 
     <q-card-section>
-     
-
       <draggable
         :model-value="card.items"
         @update:model-value="handleItemsUpdate"
@@ -68,6 +66,8 @@
                 placeholder="Edit item..."
                 @keyup.enter="saveEditItem(item.id)"
                 @keyup.esc="cancelEditItem"
+                max-width:
+                300px;
                 @blur="saveEditItem(item.id)"
                 autofocus
               />
@@ -85,7 +85,7 @@
       <div v-if="!card.items || card.items.length === 0" class="text-center q-mt-md text-grey-6">
         No items yet. Add your first item above!
       </div>
-       <q-form @submit.prevent="addItem" class="q-gutter-sm">
+      <q-form @submit.prevent="addItem" class="q-gutter-sm">
         <div class="row q-col-gutter-sm">
           <div class="col">
             <q-input
@@ -135,7 +135,7 @@ function deleteCard(id) {
 function addItem() {
   if (!newItem.value.trim()) return
   cardStore.addItemToCard(card.id, newItem.value)
-  newItem.value = '' 
+  newItem.value = ''
 }
 
 function deleteItem(itemId) {
@@ -198,7 +198,6 @@ function cancelEditItem() {
 function handleItemsUpdate(newItems) {
   cardStore.updateCardItems(card.id, newItems)
 }
-
 </script>
 
 <style scoped>
