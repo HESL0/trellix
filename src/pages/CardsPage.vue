@@ -1,5 +1,5 @@
-<template>
-  <AppHeader/>
+<template>  
+<cards-section-header />
 
   <div class="flex no-wrap q-gutter-md overflow-auto q-pa-md">
     <div
@@ -49,17 +49,16 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useCardStore } from '../stores/cardStore'
 import AppCard from '../components/card/AppCard.vue'
-import AppHeader from 'src/components/layout/AppHeader.vue'
+import CardsSectionHeader from '../components/layout/CardsSectionHeader.vue'
 
 const cardStore = useCardStore()
+const cards = computed(() => cardStore.cards)
 const isAddingCard = ref(false)
 const newTitle = ref('')
 const titleInput = ref(null)
-
-const cards = computed(() => cardStore.cards)
 
 function startAddingCard() {
   isAddingCard.value = true

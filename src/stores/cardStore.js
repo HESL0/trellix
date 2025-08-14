@@ -5,7 +5,7 @@ export const useCardStore = defineStore('card', () => {
   const cards = ref([
     { id: 1, items: [], title: 'Incomplete', isUsercard: false },
     { id: 2, items: [], title: 'complete', isUsercard: false },
-  ]) 
+  ])
 
   function addCard(content) {
     if (!content.trim()) return
@@ -17,21 +17,20 @@ export const useCardStore = defineStore('card', () => {
     })
   }
 
-function addItemToCard(cardId, content) {
-  const card = cards.value.find(c => c.id === cardId)
-  if (!card || !content.trim()) return
-  card.items.push({
-    id: Date.now(),
-    content
-  })
-}
+  function addItemToCard(cardId, content) {
+    const card = cards.value.find((c) => c.id === cardId)
+    if (!card || !content.trim()) return
+    card.items.push({
+      id: Date.now(),
+      content,
+    })
+  }
 
-function deleteItemFromCard(cardId, itemId) {
-  const card = cards.value.find(c => c.id === cardId)
-  if (!card) return
-  card.items = card.items.filter(item => item.id !== itemId)
-}
-
+  function deleteItemFromCard(cardId, itemId) {
+    const card = cards.value.find((c) => c.id === cardId)
+    if (!card) return
+    card.items = card.items.filter((item) => item.id !== itemId)
+  }
 
   function deleteCard(id) {
     cards.value = cards.value.filter((card) => card.id !== id)
@@ -39,47 +38,56 @@ function deleteItemFromCard(cardId, itemId) {
 
   function updateCardTitle(cardId, newTitle) {
     if (!newTitle.trim()) return false
-    const card = cards.value.find(c => c.id === cardId)
+    const card = cards.value.find((c) => c.id === cardId)
     if (!card || !card.isUsercard) return false
-    
+
     card.title = newTitle.trim()
     return true
   }
 
-
   function updateItem(cardId, itemId, newContent) {
     if (!newContent.trim()) return false
-    const card = cards.value.find(c => c.id === cardId)
+    const card = cards.value.find((c) => c.id === cardId)
     if (!card) return false
-    
-    const item = card.items.find(item => item.id === itemId)
+
+    const item = card.items.find((item) => item.id === itemId)
     if (!item) return false
-    
+
     item.content = newContent.trim()
     return true
   }
 
   function moveItem(itemId, fromCardId, toCardId) {
-    const fromCard = cards.value.find(c => c.id === fromCardId)
-    const toCard = cards.value.find(c => c.id === toCardId)
-    
+    const fromCard = cards.value.find((c) => c.id === fromCardId)
+    const toCard = cards.value.find((c) => c.id === toCardId)
+
     if (!fromCard || !toCard) return false
-    
-    const itemIndex = fromCard.items.findIndex(item => item.id === itemId)
+
+    const itemIndex = fromCard.items.findIndex((item) => item.id === itemId)
     if (itemIndex === -1) return false
-    
+
     const [item] = fromCard.items.splice(itemIndex, 1)
     toCard.items.push(item)
-    
+
     return true
   }
 
   function updateCardItems(cardId, newItems) {
-    const card = cards.value.find(c => c.id === cardId)
+    const card = cards.value.find((c) => c.id === cardId)
     if (!card) return false
     card.items = newItems
     return true
   }
 
-  return { cards, addCard, deleteCard, addItemToCard, deleteItemFromCard, updateCardTitle, updateItem, moveItem, updateCardItems }
+  return {
+    cards,
+    addCard,
+    deleteCard,
+    addItemToCard,
+    deleteItemFromCard,
+    updateCardTitle,
+    updateItem,
+    moveItem,
+    updateCardItems,
+  }
 })
