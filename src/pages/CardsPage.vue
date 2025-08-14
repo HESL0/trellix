@@ -1,9 +1,7 @@
 <template>
-  
   <cards-section-header />
 
   <div ref="cardsContainer" class="flex no-wrap q-gutter-md overflow-auto q-pa-md">
-     
     <draggable
       v-model="draggableCards"
       group="cards"
@@ -16,12 +14,10 @@
       @end="onCardDragEnd"
       :clone="false"
     >
-    
       <template #item="{ element: card }">
         <div class="flex-none" style="min-width: 300px">
           <AppCard :card="card" />
         </div>
-        
       </template>
 
       <template #footer>
@@ -60,7 +56,6 @@
         </div>
       </template>
     </draggable>
-   
   </div>
 </template>
 
@@ -98,8 +93,7 @@ function addCard() {
     const newCardId = cardStore.addCard(newTitle.value.trim())
     newTitle.value = ''
     startAddingCard()
-    
-    // Scroll to the newly created card
+
     nextTick(() => {
       scrollToNewCard(newCardId)
     })
@@ -114,22 +108,22 @@ function cancelAddingCard() {
 function scrollToNewCard(cardId) {
   nextTick(() => {
     if (!cardsContainer.value) return
-    
+
     const cardElements = cardsContainer.value.querySelectorAll('.flex-none')
-    const newCardIndex = cards.value.findIndex(card => card.id === cardId)
-    
+    const newCardIndex = cards.value.findIndex((card) => card.id === cardId)
+
     if (newCardIndex !== -1 && cardElements[newCardIndex]) {
       const newCardElement = cardElements[newCardIndex]
-      
+
       const containerRect = cardsContainer.value.getBoundingClientRect()
       const cardRect = newCardElement.getBoundingClientRect()
-      
+
       const scrollLeft = cardsContainer.value.scrollLeft
       const targetScroll = scrollLeft + (cardRect.left - containerRect.left)
-      
+
       cardsContainer.value.scrollTo({
         left: targetScroll,
-        behavior: 'smooth'
+        behavior: 'smooth',
       })
     }
   })
@@ -141,10 +135,10 @@ function scrollToNewCard(cardId) {
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 8px;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .overflow-auto::-webkit-scrollbar {
-  display: none; /* Chrome/Safari/Opera */
+  display: none;
 }
 </style>
