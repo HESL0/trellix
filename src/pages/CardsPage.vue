@@ -5,7 +5,7 @@
     <draggable
       v-model="draggableCards"
       group="cards"
-      item-key="id"
+      زعق-key="id"
       class="flex no-wrap q-gutter-md"
       :animation="200"
       ghost-class="ghost-card"
@@ -56,8 +56,6 @@
         </div>
       </template>
     </draggable>
-
-    <!-- System Cards (Non-draggable) -->
     <div class="flex no-wrap q-gutter-md">
       <div v-for="card in systemCards" :key="card.id" class="flex-none" style="min-width: 300px">
         <AppCard :card="card" />
@@ -77,8 +75,7 @@ const cardStore = useCardStore()
 const cards = computed(() => cardStore.cards)
 const draggableCards = computed({
   get: () => cards.value.filter((card) => card.isUsercard !== false),
-  set: (newCards) => {
-    const systemCards = cards.value.filter((card) => card.isUsercard === false)
+  set: (newCards) => {    const systemCards = cards.value.filter((card) => card.isUsercard === false)
     cardStore.updateUserCardsOrder([...newCards, ...systemCards])
   },
 })
@@ -98,7 +95,7 @@ function addCard() {
   if (newTitle.value.trim()) {
     cardStore.addCard(newTitle.value.trim())
     newTitle.value = ''
-    addCard()
+    startAddingCard()
   }
 }
 

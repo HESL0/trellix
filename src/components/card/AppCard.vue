@@ -93,30 +93,43 @@
       </draggable>
 
       <div v-if="!card.items || card.items.length === 0" class="text-center q-mt-md text-grey-6">
-        No items yet. Add your first item above!
+        No items yet. Add your first item!
       </div>
-      <q-form @submit.prevent="addItem" class="q-gutter-sm">
-        <div class="row q-col-gutter-sm">
-          <div class="col">
-            <q-input
-              v-model="newItem"
-              dense
-              outlined
-              placeholder="Add new item..."
-              :rules="[(val) => !!val || 'Item cannot be empty']"
-            />
-          </div>
-          <div class="col-auto">
-            <q-btn
-              type="submit"
-              color="primary"
-              icon="add"
-              label="Add"
-              :disable="!newItem.trim()"
-            />
-          </div>
+      
+      <div v-if="!isAddingItem" class="q-mt-md">
+        <q-btn
+          flat
+          dense
+          color="primary"
+          icon="add"
+          label="Add new item"
+          @click="startAddingItem"
+          class="full-width"
+        />
+      </div>
+      
+      <div v-else class="q-gutter-sm q-mt-md">
+        <q-input
+          v-model="newItem"
+          dense
+          outlined
+          placeholder="Enter item content"
+          @keyup.enter="addItem"
+          @keyup.esc="cancelAddingItem"
+          autofocus
+          ref="itemInput"
+        />
+        <div class="row q-gutter-xs">
+          <q-btn
+            label="Add"
+            color="primary"
+            size="sm"
+            @click="addItem"
+            :disable="!newItem.trim()"
+          />
+          <q-btn label="Cancel" size="sm" flat @click="cancelAddingItem" />
         </div>
-      </q-form>
+      </div>
     </q-card-section>
   </q-card>
 </template>
@@ -135,6 +148,8 @@ const editTitle = ref('')
 const titleInput = ref(null)
 const editingItemId = ref(null)
 const editItemContent = ref('')
+const isAddingItem = ref(false)
+const itemInput = ref(null)
 const cardStore = useCardStore()
 
 function deleteCard(id) {
@@ -145,8 +160,8 @@ function addItem() {
   if (!newItem.value.trim()) return
   cardStore.addItemToCard(card.id, newItem.value)
   newItem.value = ''
-  addItem()
-
+  // Instead of closing, immediately start adding another item
+  startAddingItem()
 }
 
 function deleteItem(itemId) {
@@ -202,6 +217,19 @@ function saveEditItem(itemId) {
 function cancelEditItem() {
   editingItemId.value = null
   editItemContent.value = ''
+}
+
+function startAddingItem() {
+  isAddingItem.value = true
+  newItem.value = ''
+  nextTick(() => {
+    itemInput.value?.focus()
+  })
+}
+
+function cancelAddingItem() {
+  newItem.value = ''
+  isAddingItem.value = false
 }
 
 function handleItemsUpdate(newItems) {
