@@ -2,7 +2,7 @@
   
   <cards-section-header />
 
-  <div class="flex no-wrap q-gutter-md overflow-auto q-pa-md">
+  <div ref="cardsContainer" class="flex no-wrap q-gutter-md overflow-auto q-pa-md">
      
     <draggable
       v-model="draggableCards"
@@ -83,6 +83,7 @@ const draggableCards = computed({
 const isAddingCard = ref(false)
 const newTitle = ref('')
 const titleInput = ref(null)
+const cardsContainer = ref(null)
 
 function startAddingCard() {
   isAddingCard.value = true
@@ -94,9 +95,14 @@ function startAddingCard() {
 
 function addCard() {
   if (newTitle.value.trim()) {
-    cardStore.addCard(newTitle.value.trim())
+    const newCardId = cardStore.addCard(newTitle.value.trim())
     newTitle.value = ''
     startAddingCard()
+    
+    // Scroll to the newly created card
+    nextTick(() => {
+      scrollToNewCard(newCardId)
+    })
   }
 }
 
@@ -105,6 +111,29 @@ function cancelAddingCard() {
   isAddingCard.value = false
 }
 
+function scrollToNewCard(cardId) {
+  nextTick(() => {
+    if (!cardsContainer.value) return
+    
+    const cardElements = cardsContainer.value.querySelectorAll('.flex-none')
+    const newCardIndex = cards.value.findIndex(card => card.id === cardId)
+    
+    if (newCardIndex !== -1 && cardElements[newCardIndex]) {
+      const newCardElement = cardElements[newCardIndex]
+      
+      const containerRect = cardsContainer.value.getBoundingClientRect()
+      const cardRect = newCardElement.getBoundingClientRect()
+      
+      const scrollLeft = cardsContainer.value.scrollLeft
+      const targetScroll = scrollLeft + (cardRect.left - containerRect.left)
+      
+      cardsContainer.value.scrollTo({
+        left: targetScroll,
+        behavior: 'smooth'
+      })
+    }
+  })
+}
 </script>
 
 <style scoped>
