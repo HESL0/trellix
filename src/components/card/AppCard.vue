@@ -78,8 +78,6 @@
                 placeholder="Edit item..."
                 @keyup.enter="saveEditItem(item.id)"
                 @keyup.esc="cancelEditItem"
-                max-width:
-                300px;
                 @blur="saveEditItem(item.id)"
                 autofocus
               />
@@ -122,7 +120,6 @@
     </q-card-section>
   </q-card>
 </template>
-
 <script setup>
 import { useCardStore } from 'src/stores/cardStore'
 import { ref, nextTick } from 'vue'
@@ -148,6 +145,8 @@ function addItem() {
   if (!newItem.value.trim()) return
   cardStore.addItemToCard(card.id, newItem.value)
   newItem.value = ''
+  addItem()
+
 }
 
 function deleteItem(itemId) {
@@ -169,7 +168,6 @@ function saveEdit() {
     cancelEdit()
     return
   }
-
   if (editTitle.value.trim() !== card.title) {
     cardStore.updateCardTitle(card.id, editTitle.value)
   }
@@ -195,7 +193,6 @@ function saveEditItem(itemId) {
     cancelEditItem()
     return
   }
-
   if (editItemContent.value.trim() !== card.items.find((item) => item.id === itemId)?.content) {
     cardStore.updateItem(card.id, itemId, editItemContent.value)
   }
@@ -217,17 +214,14 @@ function handleItemsUpdate(newItems) {
   opacity: 0.5;
   background: #c8ebfb;
 }
-
 .chosen-item {
   background-color: #f1f8ff;
   border: 2px dashed #1890ff;
 }
-
 .drag-item {
   transform: rotate(5deg);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
 .cursor-move {
   cursor: move;
 }

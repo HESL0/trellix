@@ -79,6 +79,11 @@ export const useCardStore = defineStore('card', () => {
     return true
   }
 
+  function updateUserCardsOrder(newOrder) {
+    const systemCards = cards.value.filter((c) => !c.isUsercard)
+    cards.value = [...newOrder, ...systemCards]
+  }
+
   return {
     cards,
     addCard,
@@ -89,5 +94,6 @@ export const useCardStore = defineStore('card', () => {
     updateItem,
     moveItem,
     updateCardItems,
+    updateUserCardsOrder,
   }
 })
