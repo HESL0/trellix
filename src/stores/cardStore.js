@@ -3,18 +3,17 @@ import { ref } from 'vue'
 
 export const useCardStore = defineStore('card', () => {
   const cards = ref([
-    { id: 1, items: [], title: 'Incomplete', isUsercard: false },
-    { id: 2, items: [], title: 'complete', isUsercard: false },
   ])
 
   function addCard(content) {
     if (!content.trim()) return
-    cards.value.push({
+    const newCard = {
       id: Date.now(),
       items: [],
       title: content,
-      isUsercard: true,
-    })
+    }
+    cards.value.push(newCard)
+    return newCard.id
   }
 
   function addItemToCard(cardId, content) {
@@ -39,7 +38,7 @@ export const useCardStore = defineStore('card', () => {
   function updateCardTitle(cardId, newTitle) {
     if (!newTitle.trim()) return false
     const card = cards.value.find((c) => c.id === cardId)
-    if (!card || !card.isUsercard) return false
+    if (!card) return false
 
     card.title = newTitle.trim()
     return true
@@ -80,8 +79,7 @@ export const useCardStore = defineStore('card', () => {
   }
 
   function updateUserCardsOrder(newOrder) {
-    const systemCards = cards.value.filter((c) => !c.isUsercard)
-    cards.value = [...newOrder, ...systemCards]
+    cards.value = [...newOrder]
   }
 
   return {

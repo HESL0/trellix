@@ -1,11 +1,13 @@
 <template>
+  
   <cards-section-header />
 
   <div class="flex no-wrap q-gutter-md overflow-auto q-pa-md">
+     
     <draggable
       v-model="draggableCards"
       group="cards"
-      زعق-key="id"
+      item-key="id"
       class="flex no-wrap q-gutter-md"
       :animation="200"
       ghost-class="ghost-card"
@@ -14,10 +16,12 @@
       @end="onCardDragEnd"
       :clone="false"
     >
+    
       <template #item="{ element: card }">
         <div class="flex-none" style="min-width: 300px">
           <AppCard :card="card" />
         </div>
+        
       </template>
 
       <template #footer>
@@ -56,11 +60,7 @@
         </div>
       </template>
     </draggable>
-    <div class="flex no-wrap q-gutter-md">
-      <div v-for="card in systemCards" :key="card.id" class="flex-none" style="min-width: 300px">
-        <AppCard :card="card" />
-      </div>
-    </div>
+   
   </div>
 </template>
 
@@ -74,11 +74,12 @@ import CardsSectionHeader from '../components/layout/CardsSectionHeader.vue'
 const cardStore = useCardStore()
 const cards = computed(() => cardStore.cards)
 const draggableCards = computed({
-  get: () => cards.value.filter((card) => card.isUsercard !== false),
-  set: (newCards) => {    const systemCards = cards.value.filter((card) => card.isUsercard === false)
-    cardStore.updateUserCardsOrder([...newCards, ...systemCards])
+  get: () => cards.value,
+  set: (newCards) => {
+    cardStore.updateUserCardsOrder(newCards)
   },
 })
+
 const isAddingCard = ref(false)
 const newTitle = ref('')
 const titleInput = ref(null)

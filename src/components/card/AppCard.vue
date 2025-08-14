@@ -39,7 +39,6 @@
           dense
           color="white"
           icon="delete"
-          v-if="card.isUsercard !== false"
           @click="deleteCard(card.id)"
           class="q-ml-sm"
         />
@@ -160,7 +159,6 @@ function addItem() {
   if (!newItem.value.trim()) return
   cardStore.addItemToCard(card.id, newItem.value)
   newItem.value = ''
-  // Instead of closing, immediately start adding another item
   startAddingItem()
 }
 
@@ -169,7 +167,6 @@ function deleteItem(itemId) {
 }
 
 function startEdit() {
-  if (card.isUsercard === false) return
   editTitle.value = card.title
   isEditing.value = true
   nextTick(() => {
