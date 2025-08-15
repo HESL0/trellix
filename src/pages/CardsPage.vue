@@ -1,7 +1,7 @@
 <template>
   <cards-section-header />
 
-  <div ref="cardsContainer" class="flex no-wrap q-gutter-md overflow-auto q-pa-md">
+  <div ref="cardsContainer" class="cards-container q-gutter-md">
     <draggable
       v-model="draggableCards"
       group="cards"
@@ -11,11 +11,10 @@
       ghost-class="ghost-card"
       chosen-class="chosen-card"
       drag-class="drag-card"
-      @end="onCardDragEnd"
-      :clone="false"
+      @start="enableAutoScrollOnDrag"
     >
       <template #item="{ element: card }">
-        <div class="flex-none" style="min-width: 300px">
+        <div class="flex-none" :data-id="card.id" style="min-width: 300px">
           <AppCard :card="card" />
         </div>
       </template>
@@ -23,23 +22,18 @@
       <template #footer>
         <div class="flex-none" style="min-width: 300px">
           <q-card class="q-pa-md">
-            <div
-              v-if="!isAddingCard"
-              class="flex flex-center cursor-pointer"
-              @click="startAddingCard"
-            >
+            <div v-if="!isAddingCard" class="flex flex-center cursor-pointer" @click="openAddCard">
               <q-icon name="add" size="md" />
             </div>
-
             <div v-else class="q-gutter-sm">
               <q-input
                 v-model="newTitle"
                 placeholder="Enter card title"
                 dense
                 autofocus
-                @keyup.enter="addCard"
-                @keyup.esc="cancelAddingCard"
                 ref="titleInput"
+                @keyup.enter="addCard"
+                @keyup.esc="closeAddCard"
               />
               <div class="row q-gutter-xs">
                 <q-btn
@@ -47,9 +41,9 @@
                   color="primary"
                   size="sm"
                   @click="addCard"
-                  :disable="!newTitle.trim()"
+                  :disable="!trimmedTitle"
                 />
-                <q-btn label="Cancel" size="sm" flat @click="cancelAddingCard" />
+                <q-btn label="Cancel" size="sm" flat @click="closeAddCard" />
               </div>
             </div>
           </q-card>
@@ -70,9 +64,7 @@ const cardStore = useCardStore()
 const cards = computed(() => cardStore.cards)
 const draggableCards = computed({
   get: () => cards.value,
-  set: (newCards) => {
-    cardStore.updateUserCardsOrder(newCards)
-  },
+  set: (newCards) => cardStore.updateUserCardsOrder(newCards),
 })
 
 const isAddingCard = ref(false)
@@ -80,65 +72,67 @@ const newTitle = ref('')
 const titleInput = ref(null)
 const cardsContainer = ref(null)
 
-function startAddingCard() {
+const trimmedTitle = computed(() => newTitle.value.trim())
+
+function openAddCard() {
   isAddingCard.value = true
   newTitle.value = ''
-  nextTick(() => {
-    titleInput.value?.focus()
-  })
+  nextTick(() => titleInput.value?.focus())
+}
+
+function closeAddCard() {
+  isAddingCard.value = false
+  newTitle.value = ''
 }
 
 function addCard() {
-  if (newTitle.value.trim()) {
-    const newCardId = cardStore.addCard(newTitle.value.trim())
-    newTitle.value = ''
-    startAddingCard()
-
-    nextTick(() => {
-      scrollToNewCard(newCardId)
-    })
-  }
-}
-
-function cancelAddingCard() {
+  if (!trimmedTitle.value) return
+  const newCardId = cardStore.addCard(trimmedTitle.value)
   newTitle.value = ''
-  isAddingCard.value = false
+  nextTick(() => {
+    scrollToNewCard(newCardId)
+    openAddCard()
+  })
 }
 
 function scrollToNewCard(cardId) {
-  nextTick(() => {
-    if (!cardsContainer.value) return
+  const el = cardsContainer.value?.querySelector(`[data-id="${cardId}"]`)
+  if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+}
 
-    const cardElements = cardsContainer.value.querySelectorAll('.flex-none')
-    const newCardIndex = cards.value.findIndex((card) => card.id === cardId)
+function enableAutoScrollOnDrag() {
+  const container = cardsContainer.value
+  if (!container) return
+  const edge = 60
+  const speed = 15
 
-    if (newCardIndex !== -1 && cardElements[newCardIndex]) {
-      const newCardElement = cardElements[newCardIndex]
+  const moveHandler = (e) => {
+    const rect = container.getBoundingClientRect()
+    if (e.clientX < rect.left + edge) container.scrollLeft -= speed
+    else if (e.clientX > rect.right - edge) container.scrollLeft += speed
+  }
 
-      const containerRect = cardsContainer.value.getBoundingClientRect()
-      const cardRect = newCardElement.getBoundingClientRect()
-
-      const scrollLeft = cardsContainer.value.scrollLeft
-      const targetScroll = scrollLeft + (cardRect.left - containerRect.left)
-
-      cardsContainer.value.scrollTo({
-        left: targetScroll,
-        behavior: 'smooth',
-      })
-    }
-  })
+  document.addEventListener('mousemove', moveHandler)
+  document.addEventListener('mouseup', () => {
+    document.removeEventListener('mousemove', moveHandler)
+  }, { once: true })
 }
 </script>
 
 <style scoped>
-.overflow-auto {
+.cards-container {
+  display: flex;
+  flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-bottom: 8px;
+  padding: 16px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.overflow-auto::-webkit-scrollbar {
+.cards-container::-webkit-scrollbar {
   display: none;
+}
+.flex-none {
+  flex: 0 0 auto;
 }
 </style>
