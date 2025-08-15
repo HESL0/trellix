@@ -22,16 +22,17 @@
       <template #footer>
         <div class="flex-none" style="min-width: 300px">
           <q-card class="q-pa-md">
-            <div v-if="!isAddingCard" class="flex flex-center cursor-pointer" @click="openAddCard">
-              <q-icon name="add" size="md" />
+            <div v-if="!isAddingCard" class="flex flex-center cursor-pointer text-grey-7" @click="openAddCard">
+              <q-icon name="add" size="sm" class="q-mr-xs" /> Add a card
             </div>
+
             <div v-else class="q-gutter-sm">
               <q-input
+                ref="titleInput"
                 v-model="newTitle"
                 placeholder="Enter card title"
                 dense
                 autofocus
-                ref="titleInput"
                 @keyup.enter="addCard"
                 @keyup.esc="closeAddCard"
               />
@@ -63,6 +64,7 @@ import CardsSectionHeader from '../components/layout/CardsSectionHeader.vue'
 
 const $q = useQuasar()
 const cardStore = useCardStore()
+
 const cards = computed(() => cardStore.cards)
 const draggableCards = computed({
   get: () => cards.value,
@@ -79,28 +81,32 @@ const trimmedTitle = computed(() => newTitle.value.trim())
 function openAddCard() {
   isAddingCard.value = true
   newTitle.value = ''
-  nextTick(() => titleInput.value?.focus())
+  nextTick(() => {
+    titleInput.value?.focus()
+    scrollToBottom()
+  })
 }
 
 function closeAddCard() {
   isAddingCard.value = false
   newTitle.value = ''
 }
-
 function addCard() {
   if (!trimmedTitle.value) return
-  const newCardId = cardStore.addCard(trimmedTitle.value)
+  void cardStore.addCard(trimmedTitle.value)
   newTitle.value = ''
   nextTick(() => {
-    scrollToNewCard(newCardId)
+    scrollToBottom()
     openAddCard()
   })
-  $q.notify({ message: 'new card added', color: 'green' })
+  $q.notify({ message: 'Card added', color: 'positive', timeout: 800 })
 }
 
-function scrollToNewCard(cardId) {
-  const el = cardsContainer.value?.querySelector(`[data-id="${cardId}"]`)
-  if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+function scrollToBottom() {
+  const container = cardsContainer.value
+  if (container) {
+    container.scrollLeft = container.scrollWidth
+  }
 }
 
 function enableAutoScrollOnDrag() {
@@ -116,13 +122,9 @@ function enableAutoScrollOnDrag() {
   }
 
   document.addEventListener('mousemove', moveHandler)
-  document.addEventListener(
-    'mouseup',
-    () => {
-      document.removeEventListener('mousemove', moveHandler)
-    },
-    { once: true },
-  )
+  document.addEventListener('mouseup', () => {
+    document.removeEventListener('mousemove', moveHandler)
+  }, { once: true })
 }
 </script>
 
@@ -133,6 +135,7 @@ function enableAutoScrollOnDrag() {
   overflow-x: auto;
   overflow-y: hidden;
   padding: 16px;
+  gap: 16px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }

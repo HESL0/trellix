@@ -1,4 +1,3 @@
-```vue
 <template>
   <q-toolbar class="bg-white text-black q-px-md q-py-sm shadow-sm">
     <q-toolbar-title class="text-center">
@@ -23,16 +22,14 @@
     transition-hide="fade"
   >
     <q-card
-      :class="$q.screen.lt.md ? 'rounded-lg shadow-up-5' : 'shadow-up-3'"
-      style="width: 320px; max-width: 90vw; max-height: 90vh"
-      class="overflow-hidden"
+      style="width: 320px; max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column"
     >
-      <q-toolbar class="q-px-md">
+      <q-toolbar class="q-px-md bg-white">
         <q-toolbar-title>Menu</q-toolbar-title>
         <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
 
-      <q-list>
+      <q-list class="scroll-y" style="flex: 1;">
         <q-item clickable class="q-py-md">
           <q-item-section avatar>
             <q-icon name="info" />
@@ -77,8 +74,23 @@
           <q-item-section>Change background</q-item-section>
         </q-item>
 
+        <q-item clickable class="q-py-md">
+          <q-item-section avatar>
+            <q-icon name="palette" />
+          </q-item-section>
+          <q-item-section>Customize theme</q-item-section>
+        </q-item>
+
+        <q-item clickable class="q-py-md">
+          <q-item-section avatar>
+            <q-icon name="notifications" />
+          </q-item-section>
+          <q-item-section>Notification settings</q-item-section>
+        </q-item>
+
         <q-separator class="q-my-md" />
 
+        <!-- Upgrade CTA -->
         <div class="q-px-sm q-pb-md">
           <div class="text-caption text-grey-5 q-mb-sm">Upgrade</div>
           <q-card flat bordered class="q-pa-md">
@@ -90,7 +102,9 @@
               Add dropdowns, text fields, dates, and more to your cards.
             </div>
             <div class="q-mt-sm">
-              <a href="#" class="text-blue text-bold" style="text-decoration: none">Start free trial</a>
+              <a href="#" class="text-blue text-bold" style="text-decoration: none"
+                >Start free trial</a
+              >
             </div>
           </q-card>
         </div>
@@ -113,6 +127,27 @@
 
         <q-item clickable class="q-py-md">
           <q-item-section avatar>
+            <q-icon name="extension" />
+          </q-item-section>
+          <q-item-section>Butler automation</q-item-section>
+        </q-item>
+
+        <q-item clickable class="q-py-md">
+          <q-item-section avatar>
+            <q-icon name="view_agenda" />
+          </q-item-section>
+          <q-item-section>Calendar view</q-item-section>
+        </q-item>
+
+        <q-item clickable class="q-py-md">
+          <q-item-section avatar>
+            <q-icon name="table_chart" />
+          </q-item-section>
+          <q-item-section>Table view</q-item-section>
+        </q-item>
+
+        <q-item clickable class="q-py-md">
+          <q-item-section avatar>
             <q-icon name="label" />
           </q-item-section>
           <q-item-section>Labels</q-item-section>
@@ -123,6 +158,27 @@
             <q-icon name="tag_faces" />
           </q-item-section>
           <q-item-section>Stickers</q-item-section>
+        </q-item>
+
+        <q-item clickable class="q-py-md">
+          <q-item-section avatar>
+            <q-icon name="attachment" />
+          </q-item-section>
+          <q-item-section>File attachments</q-item-section>
+        </q-item>
+
+        <q-item clickable class="q-py-md">
+          <q-item-section avatar>
+            <q-icon name="people" />
+          </q-item-section>
+          <q-item-section>Team members</q-item-section>
+        </q-item>
+
+        <q-item clickable class="q-py-md">
+          <q-item-section avatar>
+            <q-icon name="history" />
+          </q-item-section>
+          <q-item-section>Activity log</q-item-section>
         </q-item>
       </q-list>
     </q-card>
@@ -144,4 +200,3 @@ const showDialog = ref(false)
   }
 }
 </style>
-```
