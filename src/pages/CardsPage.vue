@@ -54,12 +54,14 @@
 </template>
 
 <script setup>
+import { useQuasar } from 'quasar'
 import { computed, nextTick, ref } from 'vue'
 import { useCardStore } from '../stores/cardStore'
 import draggable from 'vuedraggable'
 import AppCard from '../components/card/AppCard.vue'
 import CardsSectionHeader from '../components/layout/CardsSectionHeader.vue'
 
+const $q = useQuasar()
 const cardStore = useCardStore()
 const cards = computed(() => cardStore.cards)
 const draggableCards = computed({
@@ -93,6 +95,7 @@ function addCard() {
     scrollToNewCard(newCardId)
     openAddCard()
   })
+  $q.notify({ message: 'new card added', color: 'green' })
 }
 
 function scrollToNewCard(cardId) {
@@ -113,9 +116,13 @@ function enableAutoScrollOnDrag() {
   }
 
   document.addEventListener('mousemove', moveHandler)
-  document.addEventListener('mouseup', () => {
-    document.removeEventListener('mousemove', moveHandler)
-  }, { once: true })
+  document.addEventListener(
+    'mouseup',
+    () => {
+      document.removeEventListener('mousemove', moveHandler)
+    },
+    { once: true },
+  )
 }
 </script>
 

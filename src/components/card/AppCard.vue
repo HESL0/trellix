@@ -50,7 +50,6 @@
         :model-value="card.items"
         @update:model-value="handleItemsUpdate"
         group="cardItems"
-        @end="onDragEnd"
         item-key="id"
         class="q-mt-md"
         :animation="200"
@@ -94,7 +93,7 @@
       <div v-if="!card.items || card.items.length === 0" class="text-center q-mt-md text-grey-6">
         No items yet. Add your first item!
       </div>
-      
+
       <div v-if="!isAddingItem" class="q-mt-md">
         <q-btn
           flat
@@ -106,7 +105,7 @@
           class="full-width"
         />
       </div>
-      
+
       <div v-else class="q-gutter-sm q-mt-md">
         <q-input
           v-model="newItem"
@@ -133,10 +132,11 @@
   </q-card>
 </template>
 <script setup>
+import { useQuasar } from 'quasar'
 import { useCardStore } from 'src/stores/cardStore'
 import { ref, nextTick } from 'vue'
 import draggable from 'vuedraggable'
-
+const $q = useQuasar()
 const { card } = defineProps({
   card: Object,
 })
@@ -153,6 +153,7 @@ const cardStore = useCardStore()
 
 function deleteCard(id) {
   cardStore.deleteCard(id)
+  $q.notify({ message: 'card deleted', color: 'red' })
 }
 
 function addItem() {
@@ -160,10 +161,15 @@ function addItem() {
   cardStore.addItemToCard(card.id, newItem.value)
   newItem.value = ''
   startAddingItem()
+  $q.notify({ message: 'Item added successfully.', color: 'green' })
 }
 
 function deleteItem(itemId) {
   cardStore.deleteItemFromCard(card.id, itemId)
+  $q.notify({
+    message: 'Item deleted.',
+    color: 'red',
+  })
 }
 
 function startEdit() {
