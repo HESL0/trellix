@@ -1,25 +1,46 @@
 <template>
-  <q-footer reveal elevated class="bg-white text-black" v-if="$q.screen.lt.md">
-    <q-toolbar class="q-pa-none">
-      <q-toolbar-title class="text-center">
-        <div class="row justify-center items-center q-gutter-x-lg q-py-sm">
-          <div class="col-auto text-center">
-            <q-btn flat dense icon="person" class="q-pa-xs" />
-            <div class="text-caption text-grey-7">Inbox</div>
-          </div>
-          <div class="col-auto text-center">
-            <q-btn flat dense @click="$router.push('/cards')" icon="dashboard" class="q-pa-xs" />
-            <div class="text-caption text-grey-7">cards</div>
-          </div>
-          <div class="col-auto text-center">
-            <q-btn flat dense icon="timeline" class="q-pa-xs" />
-            <div class="text-caption text-grey-7">Planner</div>
-          </div>
-        </div>
-      </q-toolbar-title>
-    </q-toolbar>
+  <q-footer elevated class="bg-white text-black border-t border-gray-200">
+
+    <!-- Mobile / Tablet: Big icons only -->
+    <div class="flex justify-around py-3 sm:hidden">
+      <q-btn
+        v-for="item in navItems"
+        :key="item.label"
+        flat dense round size="lg"
+        :icon="item.icon"
+        @click="go(item.route)"
+        class="text-gray-700"
+      />
+    </div>
+
+    <!-- Desktop / Laptop: Centered footer with icon + label -->
+    <div class="hidden sm:flex justify-center items-center space-x-6 py-2">
+      <q-btn
+        v-for="item in navItems"
+        :key="item.label"
+        flat rounded unelevated
+        class="flex items-center space-x-2 px-3 py-2 hover:bg-gray-100"
+        @click="go(item.route)"
+      >
+        <q-icon :name="item.icon" size="md" />
+        <span class="text-sm font-medium">{{ item.label }}</span>
+      </q-btn>
+    </div>
+
   </q-footer>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const navItems = [
+  { icon: 'inbox', label: 'Inbox', route: '/inbox' },
+  { icon: 'dashboard', label: 'Cards', route: '/cards' },
+  { icon: 'event', label: 'Planner', route: '/planner' },
+]
+
+function go(route) {
+  router.push(route)
+}
 </script>

@@ -30,6 +30,7 @@
         class="lg:hidden"
         @click="toggleMobileMenu"
       />
+      
     </div>
 
     <q-menu v-model="showMobileMenu" anchor="bottom right" self="top right">
