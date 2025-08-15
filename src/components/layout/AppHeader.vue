@@ -1,5 +1,5 @@
 <template>
-  <q-header elevated class="bg-white text-black shadow-md">
+  <q-header elevated class="flex bg-white text-black shadow-md">
     <q-toolbar class="q-px-md q-px-xs">
       
       <q-btn flat round dense icon="menu" class="q-mr-sm q-md-none" />

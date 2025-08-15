@@ -1,7 +1,6 @@
 <template>
   <q-footer elevated class="bg-white text-black border-t border-gray-200">
 
-    <!-- Mobile / Tablet: Big icons only -->
     <div class="flex justify-around py-3 sm:hidden">
       <q-btn
         v-for="item in navItems"
@@ -13,7 +12,6 @@
       />
     </div>
 
-    <!-- Desktop / Laptop: Centered footer with icon + label -->
     <div class="hidden sm:flex justify-center items-center space-x-6 py-2">
       <q-btn
         v-for="item in navItems"
