@@ -4,11 +4,7 @@
       <div class="text-h6">Cards</div>
       <div class="text-subtitle2 text-grey-7">Manage your cards and activities</div>
     </q-toolbar-title>
-    
-    <div class="hidden md:flex items-center space-x-2">
-      <q-btn flat label="Account" color="primary" size="sm" @click="$router.push('/account')" />
-      <q-btn flat label="Activity" color="primary" size="sm" @click="$router.push('/activity')" />
-    </div>
+   
 
     <div class="flex items-center space-x-2">
       <q-btn 
@@ -26,61 +22,56 @@
         flat
         round
         dense
-        icon="more_vert"
-        class="lg:hidden"
-        @click="toggleMobileMenu"
+        icon="menu"
+        @click="toggleDialog"
       />
       
     </div>
 
-    <q-menu v-model="showMobileMenu" anchor="bottom right" self="top right">
-      <q-list style="min-width: 150px">
-        <q-item clickable v-close-popup @click="$router.push('/account')">
-          <q-item-section>Account</q-item-section>
-        </q-item>
-        <q-item clickable v-close-popup @click="$router.push('/activity')">
-          <q-item-section>Activity</q-item-section>
-        </q-item>
-        <q-item clickable v-close-popup @click="$router.push('/settings')">
-          <q-item-section>Settings</q-item-section>
-        </q-item>
-      </q-list>
-    </q-menu>
-
-    <q-menu v-model="showProfileMenu" anchor="bottom right" self="top right">
-      <q-list style="min-width: 150px">
-        <q-item clickable v-close-popup @click="$router.push('/profile')">
-          <q-item-section>Profile</q-item-section>
-        </q-item>
-        <q-item clickable v-close-popup @click="$router.push('/settings')">
-          <q-item-section>Settings</q-item-section>
-        </q-item>
+    <q-dialog v-model="showDialog" persistent>
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Menu</div>
+        </q-card-section>
         <q-separator />
-        <q-item clickable v-close-popup @click="logout">
-          <q-item-section>Logout</q-item-section>
-        </q-item>
-      </q-list>
-    </q-menu>
+        <q-card-section>
+          <q-item clickable v-close-popup>
+            <q-item-section>About this board</q-item-section>
+          </q-item>
+          <q-separator />
+          <q-item clickable v-close-popup>
+            <q-item-section>Visibility: Workspace</q-item-section>
+          </q-item>
+          <q-separator />
+          <q-item clickable v-close-popup>
+            <q-item-section>Print, export, and share</q-item-section>
+          </q-item>
+          <q-separator />
+          <q-item clickable v-close-popup>
+            <q-item-section>Star</q-item-section>
+          </q-item>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
   </q-toolbar>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-const showMobileMenu = ref(false)
 const showProfileMenu = ref(false)
-
-const toggleMobileMenu = () => {
-  showMobileMenu.value = !showMobileMenu.value
-}
+const showDialog = ref(false)
 
 const toggleProfileMenu = () => {
   showProfileMenu.value = !showProfileMenu.value
 }
 
-const logout = () => {
-  console.log('Logout clicked')
+const toggleDialog = () => {
+  showDialog.value = !showDialog.value
 }
+
+
 </script>
 
 <style scoped>
