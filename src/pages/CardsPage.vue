@@ -26,7 +26,7 @@
               <q-icon name="add" size="sm" class="q-mr-xs" /> Add a card
             </div>
 
-            <div v-else class="q-gutter-sm">
+            <div v-else ref="addCardFormRef" class="q-gutter-sm">
               <q-input
                 ref="titleInput"
                 v-model="newTitle"
@@ -56,7 +56,7 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useCardStore } from '../stores/cardStore'
 import draggable from 'vuedraggable'
 import AppCard from '../components/card/AppCard.vue'
@@ -75,6 +75,7 @@ const isAddingCard = ref(false)
 const newTitle = ref('')
 const titleInput = ref(null)
 const cardsContainer = ref(null)
+const addCardFormRef = ref(null)
 
 const trimmedTitle = computed(() => newTitle.value.trim())
 
@@ -126,6 +127,31 @@ function enableAutoScrollOnDrag() {
     document.removeEventListener('mousemove', moveHandler)
   }, { once: true })
 }
+
+let clickOutsideCleanup = null
+
+watch(isAddingCard, (newVal) => {
+  if (newVal) {
+    setTimeout(() => {
+      const handleClickOutside = (event) => {
+        if (addCardFormRef.value && !addCardFormRef.value.contains(event.target)) {
+          closeAddCard()
+        }
+      }
+      
+      clickOutsideCleanup = () => {
+        document.removeEventListener('click', handleClickOutside)
+      }
+      
+      document.addEventListener('click', handleClickOutside)
+    }, 0)
+  } else {
+    if (clickOutsideCleanup) {
+      clickOutsideCleanup()
+      clickOutsideCleanup = null
+    }
+  }
+})
 </script>
 
 <style scoped>

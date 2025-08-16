@@ -31,7 +31,7 @@
       </draggable>
     </div>
 
-    <q-card-actions>
+    <q-card-actions ref="addItemFormRef">
       <q-input
         v-model="newItemContent"
         placeholder="Add an item"
@@ -68,7 +68,7 @@
 
         <q-card-section>
           <div class="row q-gutter-sm q-mb-md">
-            <q-btn outline icon="add" label="Add" />
+            <q-btn outline icon="add" label="Add" @click="addItem" />
             <q-btn outline icon="tag" label="Labels" />
             <q-btn outline icon="event" label="Dates" />
           </div>
@@ -102,7 +102,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import { useCardStore } from '../../stores/cardStore'
 import draggable from 'vuedraggable'
 
@@ -123,12 +123,38 @@ const editingItem = ref({
   content: '',
   description: '',
 })
+const addItemFormRef = ref(null)
 
 const draggableItems = computed({
   get: () => props.card.items,
   set: (newItems) => {
     cardStore.updateCardItems(props.card.id, newItems)
   },
+})
+
+let clickOutsideCleanup = null
+
+const handleClickOutside = (event) => {
+  if (addItemFormRef.value?.contains(event.target)) return
+  newItemContent.value = ''
+}
+
+watch(newItemContent, (newVal) => {
+  if (newVal) {
+    setTimeout(() => {
+      clickOutsideCleanup = () => {
+        document.removeEventListener('click', handleClickOutside)
+      }
+      document.addEventListener('click', handleClickOutside)
+    }, 0)
+  } else {
+    clickOutsideCleanup?.()
+    clickOutsideCleanup = null
+  }
+})
+
+onUnmounted(() => {
+  clickOutsideCleanup?.()
 })
 
 function handleDragStart() {
@@ -163,7 +189,6 @@ function saveItem() {
 <style scoped>
 .card {
   width: 300px;
-
   max-height: 80vh;
   display: flex;
   flex-direction: column;
