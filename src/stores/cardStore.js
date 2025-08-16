@@ -2,8 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useCardStore = defineStore('card', () => {
-  const cards = ref([
-  ])
+  const cards = ref([])
 
   function addCard(content) {
     if (!content.trim()) return
@@ -22,6 +21,7 @@ export const useCardStore = defineStore('card', () => {
     card.items.push({
       id: Date.now(),
       content,
+      description: '', // Add empty description by default
     })
   }
 
@@ -44,7 +44,7 @@ export const useCardStore = defineStore('card', () => {
     return true
   }
 
-  function updateItem(cardId, itemId, newContent) {
+  function updateItem(cardId, itemId, newContent, newDescription = null) {
     if (!newContent.trim()) return false
     const card = cards.value.find((c) => c.id === cardId)
     if (!card) return false
@@ -53,6 +53,9 @@ export const useCardStore = defineStore('card', () => {
     if (!item) return false
 
     item.content = newContent.trim()
+    if (newDescription !== null) {
+      item.description = newDescription
+    }
     return true
   }
 
