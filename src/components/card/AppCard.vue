@@ -1,7 +1,21 @@
 <template>
   <q-card class="card" flat bordered>
     <q-card-section class="bg-teal text-white">
-      <div class="text-h6">{{ card.title }}</div>
+      <div v-if="!isEditingTitle" class="text-h6 cursor-pointer" @click="startEditingTitle">
+        {{ card.title }}
+      </div>
+      <q-input
+        v-else
+        v-model="editingTitle"
+        dense
+        autofocus
+        @keyup.enter="saveTitle"
+        @keyup.esc="cancelEditingTitle"
+        @blur="cancelEditingTitle"
+        class="text-h6"
+        input-class="text-white"
+        borderless
+      />
     </q-card-section>
 
     <div class="items-container">
@@ -125,6 +139,8 @@ const editingItem = ref({
   description: '',
 })
 const addItemFormRef = ref(null)
+const isEditingTitle = ref(false)
+const editingTitle = ref('')
 
 const draggableItems = computed({
   get: () => props.card.items,
@@ -184,6 +200,22 @@ function saveItem() {
   )
 
   showEditModal.value = false
+}
+
+function startEditingTitle() {
+  isEditingTitle.value = true
+  editingTitle.value = props.card.title
+}
+
+function saveTitle() {
+  if (!editingTitle.value.trim()) return
+  cardStore.updateCardTitle(props.card.id, editingTitle.value)
+  isEditingTitle.value = false
+}
+
+function cancelEditingTitle() {
+  isEditingTitle.value = false
+  editingTitle.value = ''
 }
 </script>
 

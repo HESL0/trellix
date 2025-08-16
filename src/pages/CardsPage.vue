@@ -27,7 +27,11 @@
       <template #footer>
         <div class="flex-none" style="min-width: 300px">
           <q-card class="q-pa-md">
-            <div v-if="!isAddingCard" class="flex flex-center cursor-pointer text-grey-7" @click="openAddCard">
+            <div
+              v-if="!isAddingCard"
+              class="flex flex-center cursor-pointer text-grey-7"
+              @click="openAddCard"
+            >
               <q-icon name="add" size="sm" class="q-mr-xs" /> Add a card
             </div>
 
@@ -88,7 +92,7 @@ const trimmedTitle = computed(() => newTitle.value.trim())
 
 onMounted(async () => {
   // Simulate loading delay - replace with actual data fetching
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   isLoading.value = false
 })
 
@@ -136,9 +140,13 @@ function enableAutoScrollOnDrag() {
   }
 
   document.addEventListener('mousemove', moveHandler)
-  document.addEventListener('mouseup', () => {
-    document.removeEventListener('mousemove', moveHandler)
-  }, { once: true })
+  document.addEventListener(
+    'mouseup',
+    () => {
+      document.removeEventListener('mousemove', moveHandler)
+    },
+    { once: true },
+  )
 }
 
 let clickOutsideCleanup = null
@@ -151,11 +159,11 @@ watch(isAddingCard, (newVal) => {
           closeAddCard()
         }
       }
-      
+
       clickOutsideCleanup = () => {
         document.removeEventListener('click', handleClickOutside)
       }
-      
+
       document.addEventListener('click', handleClickOutside)
     }, 0)
   } else {
