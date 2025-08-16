@@ -14,31 +14,19 @@
       @start="handleDragStart"
     >
       <template #item="{ element: item }">
-        <q-item
-          clickable
-          class="q-my-xs item-card"
-          @click="openEditModal(item)"
-        >
+        <q-item clickable class="q-my-xs item-card" @click="openEditModal(item)">
           <q-item-section>
             <q-item-label class="text-weight-medium">{{ item.content }}</q-item-label>
-            <q-item-label 
-              v-if="item.description" 
-              caption 
+            <q-item-label
+              v-if="item.description"
+              caption
               class="text-grey-7 ellipsis-2-lines q-mt-xs"
             >
               <q-icon name="notes" size="xs" class="q-mr-xs" />
-              {{ item.description }}
             </q-item-label>
           </q-item-section>
           <q-item-section side top>
-            <q-btn
-              icon="more_vert"
-              flat
-              round
-              dense
-              size="sm"
-              @click.stop="openEditModal(item)"
-            />
+            <q-btn icon="more_vert" flat round dense size="sm" @click.stop="openEditModal(item)" />
           </q-item-section>
         </q-item>
       </template>
@@ -54,56 +42,60 @@
         @keyup.enter="addItem"
       >
         <template #append>
-          <q-btn
-            v-if="newItemContent"
-            icon="add"
-            dense
-            flat
-            round
-            @click="addItem"
-          />
+          <q-btn v-if="newItemContent" icon="add" dense flat round @click="addItem" />
         </template>
       </q-input>
     </q-card-actions>
 
-    <!-- Edit Item Modal -->
-    <q-dialog v-model="showEditModal" persistent>
-      <q-card style="min-width: 400px">
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Edit Item</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
+  
+  <q-dialog v-model="showEditModal" persistent>
+    <q-card style="min-width: 400px">
+      <q-card-section class="row items-center q-pb-none">
 
-        <q-card-section>
-          <q-input
-            v-model="editingItem.content"
-            label="Title"
-            dense
-            autofocus
-            class="q-mb-md"
-          />
+        <q-input 
+          v-model="editingItem.content" 
+          label="Title" 
+          dense 
+          autofocus 
+          class="q-mb-md" 
+          outlined
+        />
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
 
-          <q-input
-            v-model="editingItem.description"
-            label="Description (optional)"
-            type="textarea"
-            autogrow
-            dense
-          />
-        </q-card-section>
+      <q-card-section>
+        <div class="row q-gutter-sm q-mb-md">
+          <q-btn outline icon="add" label="Add" />
+          <q-btn outline icon="tag" label="Labels" />
+          <q-btn outline icon="event" label="Dates" />
+        </div>
 
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn 
-            label="Save" 
-            color="primary" 
-            @click="saveItem"
-            :disable="!editingItem.content.trim()"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+        <q-separator class="q-mb-md" />
+
+        <q-icon name="notes" size="xs" class="q-mr-xs" />Description
+        <q-input
+          v-model="editingItem.description"
+          placeholder="😄 say it with an emoji, just type ':'"
+          type="textarea"
+          autogrow
+          dense
+          outlined
+          class="q-mb-md"
+        />
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn
+          label="Save"
+          color="primary"
+          @click="saveItem"
+          :disable="!editingItem.content.trim()"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
   </q-card>
 </template>
 
@@ -115,8 +107,8 @@ import draggable from 'vuedraggable'
 const props = defineProps({
   card: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['dragStart'])
@@ -127,14 +119,14 @@ const showEditModal = ref(false)
 const editingItem = ref({
   id: null,
   content: '',
-  description: ''
+  description: '',
 })
 
 const draggableItems = computed({
   get: () => props.card.items,
   set: (newItems) => {
     cardStore.updateCardItems(props.card.id, newItems)
-  }
+  },
 })
 
 function handleDragStart() {
@@ -154,14 +146,14 @@ function openEditModal(item) {
 
 function saveItem() {
   if (!editingItem.value.content.trim()) return
-  
+
   cardStore.updateItem(
     props.card.id,
     editingItem.value.id,
     editingItem.value.content,
-    editingItem.value.description
+    editingItem.value.description,
   )
-  
+
   showEditModal.value = false
 }
 </script>
@@ -184,7 +176,7 @@ function saveItem() {
 
 .ellipsis-2-lines {
   display: -webkit-box;
- 
+
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
