@@ -129,6 +129,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['dragStart'])
+import { useQuasar } from 'quasar'
 
 const cardStore = useCardStore()
 const newItemContent = ref('')
@@ -140,6 +141,7 @@ const editingItem = ref({
 })
 const addItemFormRef = ref(null)
 const isEditingTitle = ref(false)
+const $q = useQuasar()
 const editingTitle = ref('')
 
 const draggableItems = computed({
@@ -182,6 +184,11 @@ function addItem() {
   if (!newItemContent.value.trim()) return
   cardStore.addItemToCard(props.card.id, newItemContent.value)
   newItemContent.value = ''
+   $q.notify({
+    message: 'item added',
+    color: 'positive',
+    timeout: 800,
+  })
 }
 
 function openEditModal(item) {

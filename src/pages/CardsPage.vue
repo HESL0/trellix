@@ -117,7 +117,17 @@ function addCard() {
     scrollToBottom()
     openAddCard()
   })
-  $q.notify({ message: 'Card added', color: 'positive', timeout: 800 })
+  const newCard = cards.value[cards.value.length - 1]
+
+  const undo = () => {
+    cardStore.deleteCard(newCard.id)
+  }
+  $q.notify({
+    message: 'Card added',
+    color: 'positive',
+    timeout: 800,
+    actions: [{ label: 'Undo', color: 'white', handler: undo }],
+  })
 }
 
 function scrollToBottom() {
@@ -191,5 +201,11 @@ watch(isAddingCard, (newVal) => {
 }
 .flex-none {
   flex: 0 0 auto;
+}
+
+.ghost-card {
+  opacity: 0.8;
+  transform: rotate(3deg);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 </style>
