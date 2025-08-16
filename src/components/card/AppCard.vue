@@ -4,30 +4,32 @@
       <div class="text-h6">{{ card.title }}</div>
     </q-card-section>
 
-    <draggable
-      v-model="draggableItems"
-      group="items"
-      item-key="id"
-      class="q-pa-sm"
-      :animation="200"
-      ghost-class="ghost-item"
-      @start="handleDragStart"
-    >
-      <template #item="{ element: item }">
-        <q-item clickable class="q-my-xs item-card" @click="openEditModal(item)">
-          <q-item-section>
-            <q-item-label class="text-weight-medium">{{ item.content }}</q-item-label>
-            <q-item-label
-              v-if="item.description"
-              caption
-              class="text-grey-7 ellipsis-2-lines q-mt-xs"
-            >
-              <q-icon name="notes" size="xs" class="q-mr-xs" />
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-      </template>
-    </draggable>
+    <div class="items-container">
+      <draggable
+        v-model="draggableItems"
+        group="items"
+        item-key="id"
+        class="q-pa-sm"
+        :animation="200"
+        ghost-class="ghost-item"
+        @start="handleDragStart"
+      >
+        <template #item="{ element: item }">
+          <q-item clickable class="q-my-xs item-card" @click="openEditModal(item)">
+            <q-item-section>
+              <q-item-label class="text-weight-medium">{{ item.content }}</q-item-label>
+              <q-item-label
+                v-if="item.description"
+                caption
+                class="text-grey-7 ellipsis-2-lines q-mt-xs"
+              >
+                <q-icon name="notes" size="xs" class="q-mr-xs" />
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+      </draggable>
+    </div>
 
     <q-card-actions>
       <q-input
@@ -161,7 +163,25 @@ function saveItem() {
 <style scoped>
 .card {
   width: 300px;
-  min-height: 100px;
+
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.items-container {
+  overflow-y: auto;
+  flex-grow: 1;
+
+}
+
+.items-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.items-container::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
 }
 
 .item-card {
@@ -176,7 +196,6 @@ function saveItem() {
 
 .ellipsis-2-lines {
   display: -webkit-box;
-
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
