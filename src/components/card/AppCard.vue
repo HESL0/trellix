@@ -25,9 +25,6 @@
               <q-icon name="notes" size="xs" class="q-mr-xs" />
             </q-item-label>
           </q-item-section>
-          <q-item-section side top>
-            <q-btn icon="more_vert" flat round dense size="sm" @click.stop="openEditModal(item)" />
-          </q-item-section>
         </q-item>
       </template>
     </draggable>
@@ -47,55 +44,58 @@
       </q-input>
     </q-card-actions>
 
-  
-  <q-dialog v-model="showEditModal" persistent>
-    <q-card style="min-width: 400px">
-      <q-card-section class="row items-center q-pb-none">
+    <q-dialog v-model="showEditModal" persistent>
+      <q-card style="min-width: 400px">
+        <q-card-section class="flex items-center q-pa-sm q-pb-none">
+          <q-space />
+          <q-btn icon="visibility" flat round dense />
+          <q-btn icon="share" flat round dense />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
 
-        <q-input 
-          v-model="editingItem.content" 
-          label="Title" 
-          dense 
-          autofocus 
-          class="q-mb-md" 
-          outlined
-        />
-        <q-space />
-        <q-btn icon="close" flat round dense v-close-popup />
-      </q-card-section>
+        <q-card-section class="row items-center q-pb-none">
+          <q-input
+            v-model="editingItem.content"
+            label="Title"
+            dense
+            autofocus
+            class="q-mb-md full-width"
+            outlined
+          />
+        </q-card-section>
 
-      <q-card-section>
-        <div class="row q-gutter-sm q-mb-md">
-          <q-btn outline icon="add" label="Add" />
-          <q-btn outline icon="tag" label="Labels" />
-          <q-btn outline icon="event" label="Dates" />
-        </div>
+        <q-card-section>
+          <div class="row q-gutter-sm q-mb-md">
+            <q-btn outline icon="add" label="Add" />
+            <q-btn outline icon="tag" label="Labels" />
+            <q-btn outline icon="event" label="Dates" />
+          </div>
 
-        <q-separator class="q-mb-md" />
+          <q-separator class="q-mb-md" />
 
-        <q-icon name="notes" size="xs" class="q-mr-xs" />Description
-        <q-input
-          v-model="editingItem.description"
-          placeholder="😄 say it with an emoji, just type ':'"
-          type="textarea"
-          autogrow
-          dense
-          outlined
-          class="q-mb-md"
-        />
-      </q-card-section>
+          <q-icon name="notes" size="xs" class="q-mr-xs" />Description
+          <q-input
+            v-model="editingItem.description"
+            placeholder="😄 say it with an emoji, just type ':'"
+            type="textarea"
+            autogrow
+            dense
+            outlined
+            class="q-mb-md"
+          />
+        </q-card-section>
 
-      <q-card-actions align="right">
-        <q-btn flat label="Cancel" color="primary" v-close-popup />
-        <q-btn
-          label="Save"
-          color="primary"
-          @click="saveItem"
-          :disable="!editingItem.content.trim()"
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn
+            label="Save"
+            color="primary"
+            @click="saveItem"
+            :disable="!editingItem.content.trim()"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-card>
 </template>
 
