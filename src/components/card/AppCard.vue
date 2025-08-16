@@ -24,6 +24,7 @@
                 class="text-grey-7 ellipsis-2-lines q-mt-xs"
               >
                 <q-icon name="notes" size="xs" class="q-mr-xs" />
+                {{ item.description }}
               </q-item-label>
             </q-item-section>
           </q-item>

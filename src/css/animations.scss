@@ -1,0 +1,129 @@
+/* Loading animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/* Loading states */
+.loading-container {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-size: 800px 104px;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* Card animations */
+.card-enter-active,
+.card-leave-active {
+  transition: all 0.3s ease;
+}
+
+.card-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.card-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* Item animations */
+.item-enter-active,
+.item-leave-active {
+  transition: all 0.2s ease;
+}
+
+.item-enter-from {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.item-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Loading skeleton improvements */
+.skeleton-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skeleton-text {
+  border-radius: 4px;
+}
+
+/* Smooth scrolling enhancement */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Drag and drop visual improvements */
+.drag-preview {
+  opacity: 0.8;
+  transform: rotate(5deg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Notification animations */
+.notification-enter-active,
+.notification-leave-active {
+  transition: all 0.3s ease;
+}
+
+.notification-enter-from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.notification-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}

@@ -2,7 +2,12 @@
   <cards-section-header />
 
   <div ref="cardsContainer" class="cards-container q-gutter-md">
+    <div v-if="isLoading" class="flex no-wrap q-gutter-md">
+      <CardSkeleton v-for="i in 3" :key="i" />
+    </div>
+
     <draggable
+      v-else
       v-model="draggableCards"
       group="cards"
       item-key="id"
@@ -56,15 +61,17 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, onMounted } from 'vue'
 import { useCardStore } from '../stores/cardStore'
 import draggable from 'vuedraggable'
 import AppCard from '../components/card/AppCard.vue'
 import CardsSectionHeader from '../components/layout/CardsSectionHeader.vue'
+import CardSkeleton from '../components/ui/CardSkeleton.vue'
 
 const $q = useQuasar()
 const cardStore = useCardStore()
 
+const isLoading = ref(true)
 const cards = computed(() => cardStore.cards)
 const draggableCards = computed({
   get: () => cards.value,
@@ -78,6 +85,12 @@ const cardsContainer = ref(null)
 const addCardFormRef = ref(null)
 
 const trimmedTitle = computed(() => newTitle.value.trim())
+
+onMounted(async () => {
+  // Simulate loading delay - replace with actual data fetching
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  isLoading.value = false
+})
 
 function openAddCard() {
   isAddingCard.value = true
