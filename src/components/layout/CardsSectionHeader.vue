@@ -29,7 +29,7 @@
         <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
 
-      <q-list class="scroll-y" style="flex: 1;">
+      <q-list class="scroll-y" style="flex: 1">
         <q-item clickable class="q-py-md">
           <q-item-section avatar>
             <q-icon name="info" />
@@ -89,8 +89,6 @@
         </q-item>
 
         <q-separator class="q-my-md" />
-
-        <!-- Upgrade CTA -->
         <div class="q-px-sm q-pb-md">
           <div class="text-caption text-grey-5 q-mb-sm">Upgrade</div>
           <q-card flat bordered class="q-pa-md">

@@ -1,6 +1,6 @@
 <template>
   <q-card class="card" flat bordered>
-    <q-card-section class="bg-primary text-white">
+    <q-card-section class="bg-teal text-white">
       <div class="text-h6">{{ card.title }}</div>
     </q-card-section>
 
@@ -88,10 +88,10 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Cancel" color="teal" v-close-popup />
           <q-btn
             label="Save"
-            color="primary"
+            color="teal"
             @click="saveItem"
             :disable="!editingItem.content.trim()"
           />
@@ -172,7 +172,6 @@ function saveItem() {
 .items-container {
   overflow-y: auto;
   flex-grow: 1;
-
 }
 
 .items-container::-webkit-scrollbar {
@@ -180,7 +179,7 @@ function saveItem() {
 }
 
 .items-container::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
 

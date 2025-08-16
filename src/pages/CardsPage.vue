@@ -39,7 +39,7 @@
               <div class="row q-gutter-xs">
                 <q-btn
                   label="Add"
-                  color="primary"
+                  color="positive"
                   size="sm"
                   @click="addCard"
                   :disable="!trimmedTitle"
