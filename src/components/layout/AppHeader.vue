@@ -1,8 +1,7 @@
 <template>
   <q-header elevated class="flex bg-white text-black shadow-md">
     <q-toolbar class="q-px-md q-px-xs">
-      
-      <q-btn flat round dense icon="menu" class="q-mr-sm q-md-none" />
+      <q-btn to="/" flat round dense icon="menu" class="q-mr-sm q-md-none" />
 
       <q-toolbar-title class="flex-1 q-px-sm">
         <q-input
@@ -25,7 +24,6 @@
         <q-btn flat round dense icon="person" />
         <q-btn flat round dense icon="settings" class="q-none q-md-flex" />
       </div>
-
     </q-toolbar>
   </q-header>
 </template>

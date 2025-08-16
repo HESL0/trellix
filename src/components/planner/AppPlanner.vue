@@ -9,7 +9,6 @@
       <q-btn flat round dense icon="info" />
     </q-toolbar>
 
-    <!-- About Section -->
     <div class="q-pa-md bg-white q-ma-md rounded-borders shadow-sm">
       <div class="text-h6 text-weight-medium">About this planner</div>
       <div class="text-body1 text-grey-8 q-mt-sm">
@@ -18,9 +17,7 @@
       </div>
     </div>
 
-    <!-- Mock Lists (Trello-style) -->
     <div class="q-pa-md" style="display: flex; overflow-x: auto; gap: 16px; padding-bottom: 24px">
-      <!-- List 1 -->
       <div class="bg-white rounded-borders shadow-sm" style="min-width: 280px; max-width: 280px; height: fit-content;">
         <div class="q-pa-md text-subtitle2 text-weight-bold text-grey-8 border-b">
           🚀 This Week
@@ -41,7 +38,6 @@
         </div>
       </div>
 
-      <!-- List 2 -->
       <div class="bg-white rounded-borders shadow-sm" style="min-width: 280px; max-width: 280px; height: fit-content;">
         <div class="q-pa-md text-subtitle2 text-weight-bold text-grey-8 border-b">
           ✅ Done
@@ -59,7 +55,6 @@
         </div>
       </div>
 
-      <!-- List 3 -->
       <div class="bg-white rounded-borders shadow-sm" style="min-width: 280px; max-width: 280px; height: fit-content;">
         <div class="q-pa-md text-subtitle2 text-weight-bold text-grey-8 border-b">
           ⏳ In Progress
@@ -77,7 +72,6 @@
         </div>
       </div>
 
-      <!-- Add List Button -->
       <div style="min-width: 280px; display: flex; align-items: center; flex-shrink: 0;">
         <q-btn no-caps outline color="grey-5" label="+ Add List" class="q-ml-sm" />
       </div>
